@@ -3,7 +3,7 @@ HOST localhost
 SUBARCHITECTURE fault.sa
 JAVA WM cast.architecture.SubarchitectureWorkingMemory
 JAVA TM cast.architecture.AlwaysPositiveTaskManager
-JAVA MG skimmer connection.ExternalPublisher
+JAVA MG skimmer cast.ExternalPublisher
 JAVA MG counter count.Count
 
 SUBARCHITECTURE updater.sa

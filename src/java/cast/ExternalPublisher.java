@@ -1,6 +1,5 @@
-package connection;
+package cast;
 
-import cast.CASTException;
 import cast.architecture.ChangeFilterFactory;
 import cast.architecture.ManagedComponent;
 import cast.architecture.WorkingMemoryChangeReceiver;
@@ -101,7 +100,7 @@ public class ExternalPublisher extends ManagedComponent implements WorkingMemory
     @Override
     public void workingMemoryChanged(WorkingMemoryChange wmc) throws CASTException
     {
-        // Nothing to write until we have a connection
+        // Nothing to write until we have a cast
         if (!client.isConnected() && !sendingMessage)
             return;
 
@@ -130,7 +129,7 @@ public class ExternalPublisher extends ManagedComponent implements WorkingMemory
     {
         connected = false;
 
-        // Create server & accept connection from client 
+        // Create server & accept cast from client
         try {
             println("Waiting...");
             server = new ServerSocket(port);
@@ -207,7 +206,7 @@ public class ExternalPublisher extends ManagedComponent implements WorkingMemory
 
                     client.close();
                 } catch (IOException ex) {
-                    log(Level.SEVERE, "IO exception closing client connection", ex);
+                    log(Level.SEVERE, "IO exception closing client cast", ex);
                 }
 
 
