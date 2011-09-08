@@ -1,0 +1,29 @@
+# Ignore Java build
+*.class
+.idea/
+*.iml
+.depend
+nbproject/
+.classpath
+.project
+.buildxml
+lib/
+nbbuild.xml
+manifest.mf
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+
+# Compiled Dynamic libraries
+*.so
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+/output/
+/subarchitectures/aucomPlugin/build/
+/subarchitectures/tmp/
