@@ -11,6 +11,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -33,9 +35,15 @@ public class ExternalPublisher extends ManagedComponent implements WorkingMemory
     private boolean sendingMessage;
     private boolean connected;
 
+    private static List<String> filter;
+
     public ExternalPublisher(int port)
     {
         this.port = port;
+        // Add to the filter list
+        filter = new ArrayList<String>();
+        filter.add("counter");
+        filter.add("map.manager");
     }
 
     public ExternalPublisher()
@@ -103,6 +111,11 @@ public class ExternalPublisher extends ManagedComponent implements WorkingMemory
         // Nothing to write until we have a cast
         if (!client.isConnected() && !sendingMessage)
             return;
+        // Filter certain messages
+        if (filter.contains(wmc.src)) {
+            println("Filtering: " + wmc.src);
+            return;
+        }
 
         try {
             if (sendingMessage) {
