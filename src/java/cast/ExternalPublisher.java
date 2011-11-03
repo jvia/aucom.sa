@@ -44,6 +44,8 @@ public class ExternalPublisher extends ManagedComponent implements WorkingMemory
         filter = new ArrayList<String>();
         filter.add("counter");
         filter.add("map.manager");
+        filter.add("place.manager");
+        filter.add("manual.gui");
     }
 
     public ExternalPublisher()
@@ -264,5 +266,13 @@ public class ExternalPublisher extends ManagedComponent implements WorkingMemory
         } catch (IOException ex) {
             log(Level.SEVERE, "Error reading client shutdown response", ex);
         }
+    }
+}
+
+class ClientTask implements Runnable {
+
+    @Override
+    public void run() {
+        throw new UnsupportedOperationException("run() not implemented yet");
     }
 }
