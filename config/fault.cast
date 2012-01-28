@@ -10,16 +10,19 @@ SUBARCHITECTURE updater.sa
 JAVA WM cast.architecture.SubarchitectureWorkingMemory
 JAVA TM cast.architecture.AlwaysPositiveTaskManager
 JAVA MG updater updater.Updater --gaussian "100 20"
+JAVA MG chain1 updater.Chain1
+JAVA MG chain2 updater.Chain2
+JAVA MG chain3 updater.Chain3
 
-SUBARCHITECTURE collatz.sa
-JAVA WM cast.architecture.SubarchitectureWorkingMemory
-JAVA TM cast.architecture.AlwaysPositiveTaskManager
-JAVA MG end   collatz.End
-JAVA MG odd   collatz.Odd
-JAVA MG even  collatz.Even
-JAVA MG start collatz.Start --max 75
+# SUBARCHITECTURE collatz.sa
+# JAVA WM cast.architecture.SubarchitectureWorkingMemory
+# JAVA TM cast.architecture.AlwaysPositiveTaskManager
+# JAVA MG end   collatz.End
+# JAVA MG odd   collatz.Odd
+# JAVA MG even  collatz.Even
+# JAVA MG start collatz.Start --max 75
 
-SUBARCHITECTURE monitor.sa
-JAVA WM cast.architecture.SubarchitectureWorkingMemory
-JAVA TM cast.architecture.AlwaysPositiveTaskManager
-JAVA MG monitor monitor.Monitor
+# SUBARCHITECTURE monitor.sa
+# JAVA WM cast.architecture.SubarchitectureWorkingMemory
+# JAVA TM cast.architecture.AlwaysPositiveTaskManager
+# JAVA MG monitor monitor.Monitor

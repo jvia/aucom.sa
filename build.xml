@@ -21,8 +21,16 @@
   <!-- =================================================================== -->
   <!-- Source generation                                                   -->
   <!-- =================================================================== -->
-  <target name="slice" depends="prepare" description="generates source from slice">
+  <target name="slice" depends="prepare" description="generates source from slic
+e">
+    <slice2java tie="true" outputdir="${src.dir}">
+      <fileset dir="${slice.dir}" includes="updater.ice"/>
+      <includepath>
+        <pathelement path="${slice.dir}"/>
+      </includepath>
+    </slice2java>
   </target>
+
 
   <!-- =================================================================== -->
   <!-- Basic compilation                                                   -->
