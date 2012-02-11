@@ -55,4 +55,16 @@ public class Delay {
         int max = Integer.parseInt(config[2]);
         return new Delay(("random".equals(config[0]) ? DelayType.RANDOM : DelayType.GAUSSIAN), min, max);
     }
+
+    public int getMax() {
+        return max;
+    }
+
+    public int getMin() {
+        return min;
+    }
+
+    public DelayType getDelayType() {
+        return delayType;
+    }
 }

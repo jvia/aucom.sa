@@ -7,6 +7,7 @@ import cast.cdl.CASTTime;
 import cast.cdl.WorkingMemoryChange;
 import cast.cdl.WorkingMemoryOperation;
 import count.Count;
+import experiments.Counter;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -57,12 +58,6 @@ public class ExternalPublisher extends ManagedComponent implements WorkingMemory
     }
 
     private void connectedStart() {
-        openStreams();
-        createClientMonitor();
-
-        // start sending data
-        sendingMessage = true;
-
         // Subscribe to all change events
         StringBuilder b = new StringBuilder("Listening on: ");
         for (String name : getComponentManager().getComponentDescriptions().keySet()) {
@@ -70,6 +65,14 @@ public class ExternalPublisher extends ManagedComponent implements WorkingMemory
             addChangeFilter(ChangeFilterFactory.createSourceFilter(name, WorkingMemoryOperation.WILDCARD), this);
         }
         println(b);
+
+        // Open connection to aucom
+        openStreams();
+        createClientMonitor();
+
+        // start sending data
+        sendingMessage = true;
+
     }
 
     @Override
@@ -103,6 +106,9 @@ public class ExternalPublisher extends ManagedComponent implements WorkingMemory
      */
     @Override
     public void workingMemoryChanged(WorkingMemoryChange wmc) throws CASTException {
+        // Print timestamp, count, and source
+        println(String.format("<%d ms> <%d> %s", cast2ms(wmc.timestamp), Counter.getCount(), wmc.src));
+
         // Nothing to write until we have a cast
         if (!client.isConnected() && !sendingMessage)
             return;
@@ -116,6 +122,7 @@ public class ExternalPublisher extends ManagedComponent implements WorkingMemory
             println("Filtering: " + wmc.src);
             return;
         }
+
 
         try {
             if (sendingMessage) {
@@ -258,12 +265,8 @@ public class ExternalPublisher extends ManagedComponent implements WorkingMemory
             log(Level.SEVERE, "Error reading client shutdown response", ex);
         }
     }
-}
 
-class ClientTask implements Runnable {
-
-    @Override
-    public void run() {
-        throw new UnsupportedOperationException("run() not implemented yet");
+    public static long cast2ms(CASTTime ct) {
+        return 1000 * ct.s + (ct.us / 1000);
     }
 }
