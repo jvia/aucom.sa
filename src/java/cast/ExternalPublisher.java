@@ -54,10 +54,6 @@ public class ExternalPublisher extends ManagedComponent implements WorkingMemory
 
     @Override
     protected void start() {
-        connect();
-    }
-
-    private void connectedStart() {
         // Subscribe to all change events
         StringBuilder b = new StringBuilder("Listening on: ");
         for (String name : getComponentManager().getComponentDescriptions().keySet()) {
@@ -66,13 +62,16 @@ public class ExternalPublisher extends ManagedComponent implements WorkingMemory
         }
         println(b);
 
+        connect();
+    }
+
+    private void connectedStart() {
         // Open connection to aucom
         openStreams();
         createClientMonitor();
 
         // start sending data
         sendingMessage = true;
-
     }
 
     @Override
@@ -107,10 +106,15 @@ public class ExternalPublisher extends ManagedComponent implements WorkingMemory
     @Override
     public void workingMemoryChanged(WorkingMemoryChange wmc) throws CASTException {
         // Print timestamp, count, and source
-        println(String.format("<%d ms> <%d> %s", cast2ms(wmc.timestamp), Counter.getCount(), wmc.src));
+        println(String.format("%-8s %-10s %-11s %-20s [%s]",
+                              "<" + Counter.getCount() + ">",
+                              "[" + cast2ms(wmc.timestamp) + "]",
+                              "[" + wmc.operation.name() + "]",
+                              "[" + wmc.src + "]",
+                              wmc.address.subarchitecture));
 
         // Nothing to write until we have a cast
-        if (!client.isConnected() && !sendingMessage)
+        if (client == null || (!client.isConnected() && !sendingMessage))
             return;
         if (Count.isErrorCondition() && wmc.src.equals("slam.process")) {
             println("Filtering slam.process");
