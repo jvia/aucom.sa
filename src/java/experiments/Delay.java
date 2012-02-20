@@ -10,6 +10,7 @@ import java.util.Random;
 public class Delay {
 
     enum DelayType {
+        CONSTANT,
         RANDOM,
         GAUSSIAN,
         NONE
@@ -41,6 +42,8 @@ public class Delay {
             case GAUSSIAN:
                 Thread.sleep((long) (min + random.nextGaussian() * max));
                 break;
+            case CONSTANT:
+                Thread.sleep(min);
             case NONE:
                 break;
         }
@@ -52,8 +55,16 @@ public class Delay {
             return new Delay();
 
         int min = Integer.parseInt(config[1]);
-        int max = Integer.parseInt(config[2]);
-        return new Delay(("random".equals(config[0]) ? DelayType.RANDOM : DelayType.GAUSSIAN), min, max);
+        int max = 0;
+        if (config.length == 3)
+            max = Integer.parseInt(config[2]);
+
+        if ("random".equals(config[0]))
+            return new Delay(DelayType.RANDOM, min, max);
+        else if ("constant".equals(config[0]))
+            return new Delay(DelayType.CONSTANT, min, max);
+        else
+            return new Delay(DelayType.GAUSSIAN, min, max);
     }
 
     public int getMax() {
